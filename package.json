@@ -2,9 +2,11 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Starting Node on Dev\" && SET \"NODE_ENV=dev\" && npm start",
+    "start": "node server/server.js",
+    "prod": "echo \"Starting Node on Production\" && SET \"NODE_ENV=prod\" && npm start"
   },
   "author": "",
   "license": "ISC",
@@ -15,10 +17,19 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.1",
+    "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "mongodb": "^3.1.0-beta4",
     "mongoose": "^5.1.2",
+    "path": "^0.12.7",
     "socket.io": "^2.1.1",
     "validator": "^10.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.8.2"
   }
 }
