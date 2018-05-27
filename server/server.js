@@ -7,6 +7,7 @@ const { ObjectID } = require('mongodb');
 const bodyParser = require('body-parser');
 const path = require('path');
 const socketIO = require('socket.io');
+const moment = require('moment');
 
 const http = require('http');
 // const https = require('https');
@@ -27,6 +28,9 @@ const { Users } = require('./chat/users');
 const server = http.createServer(app);
 const io = socketIO(server);
 const users = new Users();
+let msgArray = [];
+let clearFlag = 0;
+
 
 app.use(bodyParser.json());
 
@@ -34,38 +38,51 @@ const myPath = path.join(__dirname, '../public');
 app.use(express.static(myPath));
 
 io.on('connection', (socket) => {
-    console.log('New user connected');
 
     socket.on('join', (params, callback) => {
         if (!isRealString(params.name) || !isRealString(params.room)) {
-            return callback('Name and room name are required.');
+            return callback('Name and Room are required.');
         }
-        socket.join(params.room.toUpper());
+
+        const formattedTime = moment().format('h:mm a');
+        params.room = params.room.toUpperCase();
+
+        socket.join(params.room);
         users.removeUser(socket.id);
         users.addUser(socket.id, params.name, params.room);
-
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-        socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
+        const user = users.getUser(socket.id);
+
+        console.log(`${params.name} ${socket.handshake.address} Connected: ${formattedTime}`);
+        socket.emit('newMessage', generateMessage('Chat Bot:', `Welcome to Chat App ${user.name}!`));
+        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Chat Bot:', `${user.name} joined the channel.`));
         return callback();
     });
 
     socket.on('createMessage', (message, callback) => {
         const user = users.getUser(socket.id);
+        let socketVar = socket.id.toString();
+        // sending to individual socketid (private message)
+        //socket.to(<socketid>).emit('hey', 'I just met you');
 
         if (user && isRealString(message.text)) {
-            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+
+            io.to(user.room).emit('newMessage', generateMessage((user.name + ':'), message.text));
+            // console.log(socket.handshake.address);
         }
 
         callback();
     });
 
     socket.on('disconnect', () => {
+        const formattedTime = moment().format('h:mm a');
+
         const user = users.removeUser(socket.id);
 
         if (user) {
             io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-            io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+            io.to(user.room).emit('newMessage', generateMessage('Chat Bot:', `${user.name} has left.`));
+            console.log(`${user.name} ${socket.handshake.address} Disconnected: ${formattedTime}`);
         }
     });
 });

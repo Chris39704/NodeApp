@@ -2,13 +2,13 @@
   "prod": {
     "PORT": 3000,
     "ENV_HOST": "192.168.0.8",
-    "MONGODB_URI": "process.env.MONGODB_PROD",
+    "MONGODB_URI": "mongodb://localhost:27017/NodeAppProd",
     "JWT_SECRET_PROD": "process.env.JWT_SECRET_PROD"
   },
   "dev": {
-    "PORT": 3030,
+    "PORT": 3001,
     "ENV_HOST": "localhost",
-    "MONGODB_URI": "process.env.MONGODB_DEV",
+    "MONGODB_URI": "mongodb://localhost:27017/NodeApp",
     "JWT_SECRET_DEV": "process.env.JWT_SECRET_DEV"
   }
 }

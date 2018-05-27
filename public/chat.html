@@ -12,7 +12,7 @@
 <body class="chat">
 
   <div class="chat__sidebar">
-    <h3>People</h3>
+    <h3>Active Users</h3>
     <div id="users"></div>
   </div>
 
@@ -24,32 +24,15 @@
         <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
         <button>Send</button>
       </form>
-      <button id="send-location">Send location</button>
     </div>
   </div>
 
   <script id="message-template" type="text/template">
     <li class="message">
       <div class="message__title">
-        <h4>{{from}}</h4>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>{{text}}</p>
-      </div>
-    </li>
-  </script>
-
-  <script id="location-message-template" type="text/template">
-    <li class="message">
-      <div class="message__title">
-        <h4>{{from}}</h4>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>
-          <a href="{{url}}" target="_blank">My current location</a>
-        </p>
+        <h4 style="display:inline;">{{from}}&nbsp;<span>{{createdAt}}</span></h4><div class="message__body" style="display:inline;">
+          <p>{{text}}</p>
+        </div>
       </div>
     </li>
   </script>

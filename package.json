@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Starting Node on Dev\" && SET \"NODE_ENV=dev\" && npm start",
-    "start": "node server/server.js",
-    "prod": "echo \"Starting Node on Production\" && SET \"NODE_ENV=prod\" && npm start"
+    "prod": "echo \"Starting Node on Production\" && SET \"NODE_ENV=prod\" && npm start",
+    "start": "node server/server.js"
   },
   "author": "",
   "license": "ISC",
